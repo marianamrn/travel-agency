@@ -1,11 +1,19 @@
-<script>
-
-</script>
-
 <template>
-  <h1>Hello</h1>
+  <div id="app">
+    <menu-component />
+    <router-view />
+  </div>
 </template>
 
-<style scoped>
+<script>
+import Menu from './components/menu.vue';
 
+export default {
+  components: {
+    'menu-component': Menu
+  }
+};
+</script>
+
+<style scoped>
 </style>
