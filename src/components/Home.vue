@@ -1,7 +1,6 @@
 <template>
     <div>
-      <h1>Home</h1>
-      <p>Welcome to the Home page.</p>
+      <img src="\src\assets\images\cover.jpg" alt="cover">
     </div>
   </template>
   
