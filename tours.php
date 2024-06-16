@@ -1,36 +1,37 @@
 <?php
-header("Access-Control-Allow-Origin: *");
-header("Content-Type: application/json; charset=UTF-8");
+header('Content-Type: application/json');
+header('Access-Control-Allow-Origin: *');
+header('Access-Control-Allow-Methods: GET, POST, OPTIONS');
+header('Access-Control-Allow-Headers: Content-Type, Authorization');
 
-$servername = "127.0.0.1:3308";
-$username = "root";
-$password = "";
-$dbname = "tour_database";
+$host = '127.0.0.1:3308';
+$dbname = 'tour_database';
+$username = 'root';
+$password = '';
 
-// Створення підключення
-$conn = new mysqli($servername, $username, $password, $dbname);
+try {
+    $pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8", $username, $password);
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-// Перевірка підключення
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
+    $stmt = $pdo->prepare("
+        SELECT 
+            tt.id, 
+            tt.name, 
+            tt.duration, 
+            tt.price, 
+            tt.start_location, 
+            tt.end_location,
+            REPLACE(ti.src, '\\\\', '/') AS img_src, 
+            ti.alt AS img_alt
+        FROM travel_tours tt
+        JOIN tours_img ti ON tt.id = ti.tour_id
+        WHERE ti.alt = 'tour-cover'
+    ");
+    $stmt->execute();
+    $tours = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    echo json_encode($tours);
+} catch (PDOException $e) {
+    echo json_encode(['error' => $e->getMessage()]);
 }
-
-// Виконання SQL запиту
-$sql = "SELECT id, name, image_path FROM tours";
-$result = $conn->query($sql);
-
-$tours = array();
-
-if ($result->num_rows > 0) {
-    // Виведення даних кожного рядка
-    while($row = $result->fetch_assoc()) {
-        $tours[] = $row;
-    }
-} else {
-    echo json_encode(array("message" => "No tours found."));
-}
-
-echo json_encode($tours);
-
-$conn->close();
 ?>
