@@ -81,7 +81,7 @@ export default {
 .tour-name {
   font-size: 1.5rem;
   margin: 0 0 10px;
-  color: #007BFF;
+  color: #044c98;
 }
 
 .tour-duration,
