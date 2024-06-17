@@ -15,27 +15,26 @@ try {
 
     $stmt = $pdo->prepare("
         SELECT 
-            t.id, 
-            t.name, 
-            t.duration, 
-            t.price, 
-            t.start_location, 
-            t.end_location,
+            e.id, 
+            e.name, 
+            e.location, 
+            e.duration, 
+            e.price, 
             i.src AS img_src, 
             i.alt AS img_alt
-        FROM tours t
-        JOIN img i ON t.id = i.tour_id
-        WHERE i.alt = 'tour-cover'
+        FROM excursions e
+        JOIN img i ON e.id = i.excursion_id
+        WHERE i.alt = 'excursion-cover'
     ");
     $stmt->execute();
-    $tours = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    $excursions = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
     // Замінюємо зворотні слеші на прямі
-    foreach ($tours as &$tour) {
-        $tour['img_src'] = str_replace('\\', '/', $tour['img_src']);
+    foreach ($excursions as &$excursion) {
+        $excursion['img_src'] = str_replace('\\', '/', $excursion['img_src']);
     }
 
-    echo json_encode($tours);
+    echo json_encode($excursions);
 } catch (PDOException $e) {
     echo json_encode(['error' => $e->getMessage()]);
 }
