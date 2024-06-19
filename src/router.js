@@ -8,6 +8,7 @@ import News from './components/News.vue';
 import Contacts from './components/Contacts.vue';
 import Login from './components/Login.vue';
 import MyProfile from './components/MyProfile.vue';
+import Register from './components/Register.vue'; 
 
 const routes = [
   { path: '/', component: Home },
@@ -18,7 +19,8 @@ const routes = [
   { path: '/news', component: News },
   { path: '/contacts', component: Contacts },
   { path: '/login', component: Login },
-  { path: '/myprofile', component: MyProfile }
+  { path: '/myprofile', component: MyProfile },
+  { path: '/register', component: Register } 
 ];
 
 const router = createRouter({
