@@ -14,14 +14,26 @@ try {
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
     $input = json_decode(file_get_contents('php://input'), true);
+
+    if (!$input) {
+        echo json_encode(['message' => 'Invalid input']);
+        exit;
+    }
+
     $email = $input['email'];
     $password = $input['password'];
+
+    if (empty($email) || empty($password)) {
+        echo json_encode(['message' => 'Email and password are required']);
+        exit;
+    }
 
     $stmt = $pdo->prepare("SELECT * FROM users WHERE email = :email");
     $stmt->execute(['email' => $email]);
     $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
-    if ($user && password_verify($password, $user['password'])) {
+    // Перевірка пароля без хешування (НЕБЕЗПЕЧНО)
+    if ($user && $password === $user['password']) {
         $token = bin2hex(random_bytes(16));
         echo json_encode([
             'message' => 'User found',
