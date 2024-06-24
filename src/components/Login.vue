@@ -10,7 +10,8 @@
     </form>
     <div class="new_acc">
       <p class="quest">Don't have an account yet?</p>
-    </div>
+    <router-link to="/register">Register</router-link>
+</div>
   </div>
 </template>
 
