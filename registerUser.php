@@ -1,36 +1,54 @@
 <?php
-header("Access-Control-Allow-Origin: *");
-header("Access-Control-Allow-Methods: POST");
-header("Access-Control-Allow-Headers: Content-Type");
+header('Content-Type: application/json');
+header('Access-Control-Allow-Origin: *');
+header('Access-Control-Allow-Methods: POST');
+header('Access-Control-Allow-Headers: Content-Type, Authorization');
 
-$servername = '127.0.0.1:3308';
+$host = '127.0.0.1:3308';
 $dbname = 'tour_database';
 $username = 'root';
 $password = '';
 
-$conn = new mysqli($servername, $username, $password, $dbname);
+try {
+    $pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8", $username, $password);
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
+    $input = json_decode(file_get_contents('php://input'), true);
 
-$data = json_decode(file_get_contents("php://input"));
-
-if (isset($data->name) && isset($data->email) && isset($data->password)) {
-    $name = $data->name;
-    $email = $data->email;
-    $password = password_hash($data->password, PASSWORD_DEFAULT);
-
-    $sql = "INSERT INTO users (name, email, password) VALUES ('$name', '$email', '$password')";
-
-    if ($conn->query($sql) === TRUE) {
-        echo json_encode(["message" => "User registered successfully"]);
-    } else {
-        echo json_encode(["message" => "Error: " . $sql . "<br>" . $conn->error]);
+    if (!$input) {
+        echo json_encode(['message' => 'Invalid input']);
+        exit;
     }
-} else {
-    echo json_encode(["message" => "Invalid input"]);
-}
 
-$conn->close();
-?>
+    $name = $input['name'];
+    $email = $input['email'];
+    $password = $input['password'];
+
+    if (empty($name) || empty($email) || empty($password)) {
+        echo json_encode(['message' => 'All fields are required']);
+        exit;
+    }
+
+    $stmt = $pdo->prepare("SELECT * FROM users WHERE email = :email");
+    $stmt->execute(['email' => $email]);
+    $user = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    if ($user) {
+        echo json_encode(['message' => 'Email already in use']);
+        exit;
+    }
+
+    // Хешування пароля
+    $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+
+    $stmt = $pdo->prepare("INSERT INTO users (name, email, password, created_at) VALUES (:name, :email, :password, NOW())");
+    $stmt->execute([
+        'name' => $name,
+        'email' => $email,
+        'password' => $hashedPassword,
+    ]);
+
+    echo json_encode(['message' => 'User registered successfully']);
+} catch (PDOException $e) {
+    echo json_encode(['error' => $e->getMessage()]);
+}

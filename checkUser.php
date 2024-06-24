@@ -32,8 +32,8 @@ try {
     $stmt->execute(['email' => $email]);
     $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
-    // Перевірка пароля без хешування (НЕБЕЗПЕЧНО)
-    if ($user && $password === $user['password']) {
+    // Перевірка пароля з хешуванням
+    if ($user && password_verify($password, $user['password'])) {
         $token = bin2hex(random_bytes(16));
         echo json_encode([
             'message' => 'User found',
@@ -46,4 +46,3 @@ try {
 } catch (PDOException $e) {
     echo json_encode(['error' => $e->getMessage()]);
 }
-?>
