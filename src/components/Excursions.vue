@@ -1,6 +1,23 @@
 <template>
   <div class="excursions">
     <h1 class="page-title">Our Excursions</h1>
+
+    <!-- Форма пошуку -->
+    <form @submit.prevent="searchExcursions" class="search-form">
+      <div class="search-inputs">
+        <input type="text" v-model="search.city" placeholder="City" />
+        <input type="date" v-model="search.date" placeholder="Date" />
+        <input type="text" v-model="search.language" placeholder="Language" />
+        <div class="price-range">
+          <label for="price-min">Price Min: ${{ search.price_min }}</label>
+          <input type="range" v-model="search.price_min" min="0" max="1000" step="1" />
+          <label for="price-max">Price Max: ${{ search.price_max }}</label>
+          <input type="range" v-model="search.price_max" min="0" max="1000" step="1" />
+        </div>
+        <button type="submit" class="button-search">Search</button>
+      </div>
+    </form>
+
     <div v-if="excursions.length" class="excursions-container">
       <div v-for="excursion in excursions" :key="excursion.id" class="excursion-card">
         <img :src="excursion.img_src" :alt="excursion.img_alt" class="excursion-cover">
@@ -8,7 +25,7 @@
           <h2 class="excursion-name">{{ excursion.name }}</h2>
           <p class="excursion-duration">Duration: {{ excursion.duration }} hours</p>
           <p class="excursion-price">Price: ${{ excursion.price }}</p>
-          <p class="excursion-location">Location: {{ excursion.location }}</p>
+          <p class="excursion-location">Location: {{ excursion.city }}, {{ excursion.country }}</p>
         </div>
       </div>
     </div>
@@ -24,27 +41,115 @@ import axios from 'axios';
 export default {
   data() {
     return {
-      excursions: []
+      excursions: [],
+      search: {
+        city: '',
+        date: '',
+        language: '',
+        price_min: 0,
+        price_max: 1000
+      }
     };
   },
   mounted() {
-    axios.get('http://localhost/api/excursions.php')
+    this.fetchExcursions();
+  },
+  methods: {
+    fetchExcursions() {
+      axios.get('http://localhost/api/excursions.php')
+        .then(response => {
+          this.excursions = response.data;
+        })
+        .catch(error => {
+          console.error('Error fetching excursions:', error);
+        });
+    },
+    searchExcursions() {
+      axios.post('http://localhost/api/excursions.php', this.search, {
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      })
       .then(response => {
         this.excursions = response.data;
       })
       .catch(error => {
-        console.error('Error fetching excursions:', error);
+        console.error('Error searching excursions:', error);
       });
+    }
   }
 };
 </script>
 
 <style scoped>
+/* Додайте стилі для форми пошуку */
 .page-title {
   text-align: center;
   margin: 20px 0;
   font-size: 2.5rem;
   color: #333;
+}
+
+.search-form {
+  background-color: #fff;
+  border-radius: 15px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  padding: 15px;
+  max-width: 1300px;
+  margin: 0 auto 20px;
+  transition: box-shadow 0.3s;
+}
+
+.search-form:hover {
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3);
+}
+
+.search-inputs {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.search-form input,
+.search-form select {
+  padding: 10px;
+  font-size: 0.875rem;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  width: 180px;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.price-range {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.search-form input:focus,
+.search-form select:focus {
+  border-color: #007bff;
+  box-shadow: inset 0 3px 6px rgba(0, 0, 0, 0.15);
+  outline: none;
+}
+
+.button-search {
+  padding: 10px 20px;
+  font-size: 0.875rem;
+  border: none;
+  border-radius: 8px;
+  background-color: #007bff;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.3s;
+}
+
+.button-search:hover {
+  background-color: #0056b3;
+  transform: translateY(-2px);
 }
 
 .excursions-container {
