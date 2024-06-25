@@ -1,16 +1,27 @@
 <template>
   <div v-if="tour" class="tour-detail">
-      <h1 class="tour-title">{{ tour.name }}</h1>
-      <!-- Інша HTML розмітка туру -->
-
-      <!-- Карусель для зображень -->
-      <div v-if="tour.images.length" class="carousel">
-        <div v-for="(image, index) in tour.images" :key="index" class="carousel-item" :class="{ active: index === activeIndex }">
-          <img :src="image.img_src" :alt="image.img_alt">
-        </div>
-        <button @click="prevSlide" class="prev">Prev</button>
-        <button @click="nextSlide" class="next">Next</button>
+    <h1 class="tour-title">{{ tour.name }}</h1>
+    <!-- Карусель для зображень -->
+    <div v-if="tour.images.length" class="carousel">
+      <div v-for="(image, index) in tour.images" :key="index" class="carousel-item" :class="{ active: index === activeIndex }">
+        <img :src="image.img_src" :alt="image.img_alt">
       </div>
+      <button @click="prevSlide" class="prev">Prev</button>
+      <button @click="nextSlide" class="next">Next</button>
+    </div>
+    <!-- Інформація про тур -->
+    <div class="tour-info">
+      <h2>Tour Details</h2>
+      <p><strong>Description:</strong> {{ tour.description }}</p>
+      <p><strong>Included Services:</strong> {{ tour.included_services }}</p>
+      <p><strong>Duration:</strong> {{ tour.duration }} days</p>
+      <p><strong>Price:</strong> ${{ tour.price }}</p>
+      <p><strong>Start Location:</strong> {{ tour.start_city }}, {{ tour.start_country }}</p>
+      <p><strong>End Location:</strong> {{ tour.end_city }}, {{ tour.end_country }}</p>
+      <p><strong>Start Date:</strong> {{ tour.start_date }}</p>
+      <p><strong>Category:</strong> {{ tour.category }}</p>
+      <p><strong>Max Participants:</strong> {{ tour.max_participants }}</p>
+    </div>
   </div>
 </template>
 
@@ -61,6 +72,7 @@ export default {
   background-color: #fff;
   border-radius: 10px;
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  overflow: hidden;
 }
 
 .tour-title {
@@ -75,7 +87,8 @@ export default {
   display: flex;
   overflow: hidden;
   width: 100%;
-  height: 300px; /* Задайте потрібну висоту */
+  height: 300px;
+  margin-bottom: 20px; /* Відступ знизу для каруселі */
 }
 
 .carousel-item {
@@ -123,5 +136,29 @@ export default {
 
 .next {
   right: 10px;
+}
+
+.tour-info {
+  background-color: #f9f9f9;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin-top: 20px;
+}
+
+.tour-info h2 {
+  margin-bottom: 15px;
+  font-size: 1.8rem;
+  color: #044c98;
+}
+
+.tour-info p {
+  margin: 10px 0;
+  font-size: 1rem;
+  color: #555;
+}
+
+.tour-info p strong {
+  color: #333;
 }
 </style>
