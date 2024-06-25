@@ -21,7 +21,7 @@
     </form>
 
     <div v-if="tours.length" class="tours-container">
-      <div v-for="tour in tours" :key="tour.id" class="tour-card">
+      <div v-for="tour in tours" :key="tour.id" class="tour-card" @click="goToTourDetail(tour.id)">
         <img :src="tour.img_src" :alt="tour.img_alt" class="tour-cover">
         <div class="tour-info">
           <h2 class="tour-name">{{ tour.name }}</h2>
@@ -79,6 +79,9 @@ export default {
       .catch(error => {
         console.error('Error searching tours:', error);
       });
+    },
+    goToTourDetail(tourId) {
+      this.$router.push({ path: `/tour/${tourId}` });
     }
   }
 };
@@ -162,6 +165,7 @@ export default {
   overflow: hidden;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   transition: transform 0.3s, box-shadow 0.3s;
+  cursor: pointer;
 }
 
 .tour-card:hover {

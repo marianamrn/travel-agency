@@ -9,6 +9,7 @@ import Contacts from './components/Contacts.vue';
 import Login from './components/Login.vue';
 import MyProfile from './components/MyProfile.vue';
 import Register from './components/Register.vue'; 
+import TourDetail from './components/TourDetail.vue'; // Імпорт нового компонента
 
 const routes = [
   { path: '/', component: Home },
@@ -20,7 +21,8 @@ const routes = [
   { path: '/contacts', component: Contacts },
   { path: '/login', component: Login },
   { path: '/myprofile', component: MyProfile },
-  { path: '/register', component: Register } 
+  { path: '/register', component: Register },
+  { path: '/tour/:id', component: TourDetail, props: true } // Додаємо маршрут для деталей туру
 ];
 
 const router = createRouter({
