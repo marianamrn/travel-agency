@@ -6,6 +6,9 @@ import Excursions from './components/Excursions.vue';
 import Hotels from './components/Hotels.vue';
 import News from './components/News.vue';
 import Contacts from './components/Contacts.vue';
+import Login from './components/Login.vue';
+import MyProfile from './components/MyProfile.vue';
+import Register from './components/Register.vue'; 
 
 const routes = [
   { path: '/', component: Home },
@@ -14,7 +17,10 @@ const routes = [
   { path: '/excursions', component: Excursions },
   { path: '/hotels', component: Hotels },
   { path: '/news', component: News },
-  { path: '/contacts', component: Contacts }
+  { path: '/contacts', component: Contacts },
+  { path: '/login', component: Login },
+  { path: '/myprofile', component: MyProfile },
+  { path: '/register', component: Register } 
 ];
 
 const router = createRouter({

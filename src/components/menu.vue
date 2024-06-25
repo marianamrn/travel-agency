@@ -8,6 +8,7 @@
       <li><router-link to="/hotels">Hotels</router-link></li>
       <li><router-link to="/news">News</router-link></li>
       <li><router-link to="/contacts">Contacts</router-link></li>
+      <li><router-link to="/myprofile">My Profile</router-link></li>
     </ul>
   </nav>
 </template>
