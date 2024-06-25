@@ -131,7 +131,8 @@ html {
   object-fit: cover;
 }
 
-button {
+.prev, 
+.next {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);

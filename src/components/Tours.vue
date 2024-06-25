@@ -3,19 +3,21 @@
     <h1 class="page-title">Our Tours</h1>
     
     <form @submit.prevent="searchTours" class="search-form">
-      <input type="text" v-model="search.start_city" placeholder="Start City" />
-      <input type="text" v-model="search.end_city" placeholder="End City" />
-      <input type="date" v-model="search.start_date" placeholder="Start Date" />
-      <input type="number" v-model="search.duration" placeholder="Duration (days)" />
-      <select v-model="search.category">
-        <option value="">Select Category</option>
-        <option value="family">Family</option>
-        <option value="romantic">Romantic</option>
-        <option value="group">Group</option>
-        <option value="other">Other</option>
-      </select>
-      <input type="number" v-model="search.max_participants" placeholder="Number of Participants" />
-      <button type="submit">Search</button>
+      <div class="search-inputs">
+        <input type="text" v-model="search.start_city" placeholder="Start City" />
+        <input type="text" v-model="search.end_city" placeholder="End City" />
+        <input type="date" v-model="search.start_date" placeholder="Start Date" />
+        <input type="number" v-model="search.duration" placeholder="Duration (days)" />
+        <select v-model="search.category">
+          <option value="">Select Category</option>
+          <option value="family">Family</option>
+          <option value="romantic">Romantic</option>
+          <option value="group">Group</option>
+          <option value="other">Other</option>
+        </select>
+        <input type="number" v-model="search.max_participants" placeholder="Number of Participants" />
+        <button type="submit" class="button-search">Search</button>
+      </div>
     </form>
 
     <div v-if="tours.length" class="tours-container">
@@ -91,34 +93,59 @@ export default {
 }
 
 .search-form {
+  background-color: #fff;
+  border-radius: 15px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  padding: 15px;
+  max-width: 1300px;
+  margin: 0 auto 20px;
+  transition: box-shadow 0.3s;
+}
+
+.search-form:hover {
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3);
+}
+
+.search-inputs {
   display: flex;
-  flex-wrap: wrap;
   gap: 10px;
-  justify-content: center;
-  margin-bottom: 20px;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: space-between;
 }
 
 .search-form input,
 .search-form select {
   padding: 10px;
-  font-size: 1rem;
+  font-size: 0.875rem;
   border: 1px solid #ccc;
-  border-radius: 5px;
+  border-radius: 8px;
+  width: 180px;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: border-color 0.3s, box-shadow 0.3s;
 }
 
-.search-form button {
+.search-form input:focus,
+.search-form select:focus {
+  border-color: #007bff;
+  box-shadow: inset 0 3px 6px rgba(0, 0, 0, 0.15);
+  outline: none;
+}
+
+.button-search {
   padding: 10px 20px;
-  font-size: 1rem;
+  font-size: 0.875rem;
   border: none;
-  border-radius: 5px;
+  border-radius: 8px;
   background-color: #007bff;
   color: white;
   cursor: pointer;
-  transition: background-color 0.3s;
+  transition: background-color 0.3s, transform 0.3s;
 }
 
-.search-form button:hover {
+.button-search:hover {
   background-color: #0056b3;
+  transform: translateY(-2px);
 }
 
 .tours-container {
