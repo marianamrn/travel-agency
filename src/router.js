@@ -9,7 +9,9 @@ import Contacts from './components/Contacts.vue';
 import Login from './components/Login.vue';
 import MyProfile from './components/MyProfile.vue';
 import Register from './components/Register.vue'; 
-import TourDetail from './components/TourDetail.vue'; // Імпорт нового компонента
+import TourDetail from './components/TourDetail.vue'; 
+import TourReservation from './components/TourReservation.vue';
+
 
 const routes = [
   { path: '/', component: Home },
@@ -22,8 +24,10 @@ const routes = [
   { path: '/login', component: Login },
   { path: '/myprofile', component: MyProfile },
   { path: '/register', component: Register },
-  { path: '/tour/:id', component: TourDetail, props: true } // Додаємо маршрут для деталей туру
+  { path: '/tour/:id', component: TourDetail, props: true },
+  { path: '/reserve/:id', component: TourReservation, props: true } // Додавання нового маршруту
 ];
+
 
 const router = createRouter({
   history: createWebHistory(),

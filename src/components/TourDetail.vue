@@ -21,12 +21,14 @@
       <p><strong>Start Date:</strong> {{ tour.start_date }}</p>
       <p><strong>Category:</strong> {{ tour.category }}</p>
       <p><strong>Max Participants:</strong> {{ tour.max_participants }}</p>
+      <button class="reserve-button" @click="reserveTour">Reserve</button>
     </div>
   </div>
 </template>
 
 <script>
 import axios from 'axios';
+import { isAuthenticated } from '@/auth'; // Імпорт функції isAuthenticated
 
 export default {
   data() {
@@ -49,6 +51,13 @@ export default {
         .catch(error => {
           console.error('Error fetching tour details:', error);
         });
+    },
+    reserveTour() {
+      if (!isAuthenticated()) {
+        this.$router.push('/login');
+        return;
+      }
+      this.$router.push(`/reserve/${this.$route.params.id}`);
     },
     nextSlide() {
       if (this.tour.images.length > 0) {
@@ -160,5 +169,25 @@ export default {
 
 .tour-info p strong {
   color: #333;
+}
+
+.reserve-button {
+  background-color: #28a745;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 20px;
+  font-size: 1.2rem;
+}
+
+.reserve-button:hover {
+  background-color: #218838;
+}
+
+.reserve-button:focus {
+  outline: none;
+  box-shadow: 0 0 0 4px rgba(40, 167, 69, 0.5);
 }
 </style>
