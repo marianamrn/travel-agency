@@ -9,8 +9,11 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@jambonn/vue-carousel": "^0.1.1",
     "axios": "^1.7.2",
+    "swiper": "^11.1.4",
     "vue": "^3.4.27",
+    "vue-awesome-swiper": "^5.0.1",
     "vue-router": "^4.3.2",
     "vue3-carousel": "^0.3.3"
   },
