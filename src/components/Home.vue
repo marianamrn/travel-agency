@@ -9,8 +9,8 @@
       <img :src="image.src" :alt="image.alt" class="carousel-img">
     </div>
   </div>
-  <button @click="prevSlide">Prev</button>
-  <button @click="nextSlide">Next</button>
+  <button @click="prevSlide" class="prev">Prev</button>
+  <button @click="nextSlide" class="next">Next</button>
 </template>
 
 <script>
@@ -131,7 +131,8 @@ html {
   object-fit: cover;
 }
 
-button {
+.prev, 
+.next {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
@@ -151,11 +152,11 @@ button:focus {
   outline: none;
 }
 
-button:first-of-type {
+.prev:first-of-type {
   left: 10px;
 }
 
-button:last-of-type {
+.next:last-of-type {
   right: 10px;
 }
 </style>
