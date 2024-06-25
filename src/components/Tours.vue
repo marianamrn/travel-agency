@@ -1,6 +1,23 @@
 <template>
   <div class="tours">
     <h1 class="page-title">Our Tours</h1>
+    
+    <form @submit.prevent="searchTours" class="search-form">
+      <input type="text" v-model="search.start_city" placeholder="Start City" />
+      <input type="text" v-model="search.end_city" placeholder="End City" />
+      <input type="date" v-model="search.start_date" placeholder="Start Date" />
+      <input type="number" v-model="search.duration" placeholder="Duration (days)" />
+      <select v-model="search.category">
+        <option value="">Select Category</option>
+        <option value="family">Family</option>
+        <option value="romantic">Romantic</option>
+        <option value="group">Group</option>
+        <option value="other">Other</option>
+      </select>
+      <input type="number" v-model="search.max_participants" placeholder="Number of Participants" />
+      <button type="submit">Search</button>
+    </form>
+
     <div v-if="tours.length" class="tours-container">
       <div v-for="tour in tours" :key="tour.id" class="tour-card">
         <img :src="tour.img_src" :alt="tour.img_alt" class="tour-cover">
@@ -8,7 +25,7 @@
           <h2 class="tour-name">{{ tour.name }}</h2>
           <p class="tour-duration">Duration: {{ tour.duration }} days</p>
           <p class="tour-price">Price: ${{ tour.price }}</p>
-          <p class="tour-locations">From: {{ tour.start_location }} to {{ tour.end_location }}</p>
+          <p class="tour-locations">From: {{ tour.start_city }}, {{ tour.start_country }} to {{ tour.end_city }}, {{ tour.end_country }}</p>
         </div>
       </div>
     </div>
@@ -24,17 +41,43 @@ import axios from 'axios';
 export default {
   data() {
     return {
-      tours: []
+      tours: [],
+      search: {
+        start_city: '',
+        end_city: '',
+        start_date: '',
+        duration: '',
+        category: '',
+        max_participants: ''
+      }
     };
   },
   mounted() {
-    axios.get('http://localhost/api/tours.php')
-  .then(response => {
-    this.tours = response.data;
-  })
-  .catch(error => {
-    console.error('Error fetching tours:', error);
-  });
+    this.fetchTours();
+  },
+  methods: {
+    fetchTours() {
+      axios.get('http://localhost/api/tours.php')
+        .then(response => {
+          this.tours = response.data;
+        })
+        .catch(error => {
+          console.error('Error fetching tours:', error);
+        });
+    },
+    searchTours() {
+      axios.post('http://localhost/api/tours.php', this.search, {
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      })
+      .then(response => {
+        this.tours = response.data;
+      })
+      .catch(error => {
+        console.error('Error searching tours:', error);
+      });
+    }
   }
 };
 </script>
@@ -45,6 +88,37 @@ export default {
   margin: 20px 0;
   font-size: 2.5rem;
   color: #333;
+}
+
+.search-form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.search-form input,
+.search-form select {
+  padding: 10px;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.search-form button {
+  padding: 10px 20px;
+  font-size: 1rem;
+  border: none;
+  border-radius: 5px;
+  background-color: #007bff;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.search-form button:hover {
+  background-color: #0056b3;
 }
 
 .tours-container {
