@@ -15,6 +15,17 @@
           <option value="historical">Historical</option>
           <option value="other">Other</option>
         </select>
+        
+        <!-- Додаємо повзунки для мінімальної та максимальної ціни -->
+        <div class="price-range">
+          <label>Min Price: ${{ search.price_min }}</label>
+          <input type="range" v-model="search.price_min" min="0" max="1000" step="10" />
+        </div>
+        <div class="price-range">
+          <label>Max Price: ${{ search.price_max }}</label>
+          <input type="range" v-model="search.price_max" min="0" max="1000" step="10" />
+        </div>
+
         <button type="submit" class="button-search">Search</button>
       </div>
     </form>
@@ -47,7 +58,9 @@ export default {
         location: '',
         date: '',
         duration: '',
-        category: ''
+        category: '',
+        price_min: 0,
+        price_max: 1000
       }
     };
   },
@@ -65,7 +78,14 @@ export default {
         });
     },
     searchExcursions() {
-      axios.post('http://localhost/api/excursions.php', this.search, {
+      axios.post('http://localhost/api/excursions.php', {
+          location: this.search.location,
+          date: this.search.date,
+          duration: this.search.duration,
+          category: this.search.category,
+          price_min: this.search.price_min,
+          price_max: this.search.price_max
+        }, {
         headers: {
           'Content-Type': 'application/json'
         }
@@ -121,7 +141,7 @@ export default {
   font-size: 0.875rem;
   border: 1px solid #ccc;
   border-radius: 8px;
-  width: 180px;
+  width: 150px;
   box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
   transition: border-color 0.3s, box-shadow 0.3s;
 }
