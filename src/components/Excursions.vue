@@ -1,25 +1,26 @@
+<!-- src/components/Excursions.vue -->
 <template>
   <div class="excursions">
     <h1 class="page-title">Our Excursions</h1>
-
-    <!-- Форма пошуку -->
+    
     <form @submit.prevent="searchExcursions" class="search-form">
       <div class="search-inputs">
-        <input type="text" v-model="search.city" placeholder="City" />
+        <input type="text" v-model="search.location" placeholder="Location" />
         <input type="date" v-model="search.date" placeholder="Date" />
-        <input type="text" v-model="search.language" placeholder="Language" />
-        <div class="price-range">
-          <label for="price-min">Price Min: ${{ search.price_min }}</label>
-          <input type="range" v-model="search.price_min" min="0" max="1000" step="1" />
-          <label for="price-max">Price Max: ${{ search.price_max }}</label>
-          <input type="range" v-model="search.price_max" min="0" max="1000" step="1" />
-        </div>
+        <input type="number" v-model="search.duration" placeholder="Duration (hours)" />
+        <select v-model="search.category">
+          <option value="">Select Category</option>
+          <option value="adventure">Adventure</option>
+          <option value="cultural">Cultural</option>
+          <option value="historical">Historical</option>
+          <option value="other">Other</option>
+        </select>
         <button type="submit" class="button-search">Search</button>
       </div>
     </form>
 
     <div v-if="excursions.length" class="excursions-container">
-      <div v-for="excursion in excursions" :key="excursion.id" class="excursion-card">
+      <div v-for="excursion in excursions" :key="excursion.id" class="excursion-card" @click="goToExcursionDetail(excursion.id)">
         <img :src="excursion.img_src" :alt="excursion.img_alt" class="excursion-cover">
         <div class="excursion-info">
           <h2 class="excursion-name">{{ excursion.name }}</h2>
@@ -43,11 +44,10 @@ export default {
     return {
       excursions: [],
       search: {
-        city: '',
+        location: '',
         date: '',
-        language: '',
-        price_min: 0,
-        price_max: 1000
+        duration: '',
+        category: ''
       }
     };
   },
@@ -76,6 +76,9 @@ export default {
       .catch(error => {
         console.error('Error searching excursions:', error);
       });
+    },
+    goToExcursionDetail(excursionId) {
+      this.$router.push({ path: `/excursion/${excursionId}` });
     }
   }
 };

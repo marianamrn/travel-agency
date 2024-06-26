@@ -11,7 +11,7 @@ import MyProfile from './components/MyProfile.vue';
 import Register from './components/Register.vue'; 
 import TourDetail from './components/TourDetail.vue'; 
 import TourReservation from './components/TourReservation.vue';
-
+import ExcursionDetail from './components/ExcursionDetail.vue'; 
 
 const routes = [
   { path: '/', component: Home },
@@ -25,7 +25,8 @@ const routes = [
   { path: '/myprofile', component: MyProfile },
   { path: '/register', component: Register },
   { path: '/tour/:id', component: TourDetail, props: true },
-  { path: '/reserve/:id', component: TourReservation, props: true } // Додавання нового маршруту
+  { path: '/reserveTours/:id', component: TourReservation, props: true },
+  { path: '/excursion/:id', component: ExcursionDetail, props: true }
 ];
 
 

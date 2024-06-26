@@ -57,7 +57,7 @@ export default {
         this.$router.push('/login');
         return;
       }
-      this.$router.push(`/reserve/${this.$route.params.id}`);
+      this.$router.push(`/reserveTours/${this.$route.params.id}`);
     },
     nextSlide() {
       if (this.tour.images.length > 0) {
