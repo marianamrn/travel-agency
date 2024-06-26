@@ -12,6 +12,7 @@ import Register from './components/Register.vue';
 import TourDetail from './components/TourDetail.vue'; 
 import TourReservation from './components/TourReservation.vue';
 import ExcursionDetail from './components/ExcursionDetail.vue'; 
+import ExcursionReservation from './components/ExcursionReservation.vue';
 
 const routes = [
   { path: '/', component: Home },
@@ -26,9 +27,9 @@ const routes = [
   { path: '/register', component: Register },
   { path: '/tour/:id', component: TourDetail, props: true },
   { path: '/reserveTours/:id', component: TourReservation, props: true },
-  { path: '/excursion/:id', component: ExcursionDetail, props: true }
+  { path: '/excursion/:id', component: ExcursionDetail, props: true },
+  { path: '/reserveExcursions/:id', component: ExcursionReservation, props: true }
 ];
-
 
 const router = createRouter({
   history: createWebHistory(),

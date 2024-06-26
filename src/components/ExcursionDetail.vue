@@ -1,4 +1,4 @@
-<template>
+  <template>
     <div v-if="excursion" class="excursion-detail">
       <h1 class="excursion-title">{{ excursion.name }}</h1>
       <div v-if="excursion.images.length" class="carousel">
@@ -26,50 +26,50 @@
       <p>Excursion details not found.</p>
     </div>
   </template>
-  
+
   <script>
   import axios from 'axios';
   import { isAuthenticated } from '@/auth';
-  
+
   export default {
-    data() {
-      return {
-        excursion: null,
-        activeIndex: 0
-      };
+  data() {
+    return {
+      excursion: null,
+      activeIndex: 0
+    };
+  },
+  created() {
+    this.fetchExcursionDetail();
+  },
+  methods: {
+    fetchExcursionDetail() {
+      const excursionId = this.$route.params.id;
+      axios.get(`http://localhost/api/excursion_detail.php?id=${excursionId}`)
+        .then(response => {
+          this.excursion = response.data;
+        })
+        .catch(error => {
+          console.error('Error fetching excursion details:', error);
+        });
     },
-    created() {
-      this.fetchExcursionDetail();
+    reserveExcursion() {
+      if (!isAuthenticated()) {
+        this.$router.push('/login');
+        return;
+      }
+      this.$router.push(`/reserveExcursions/${this.$route.params.id}`);
     },
-    methods: {
-      fetchExcursionDetail() {
-        const excursionId = this.$route.params.id;
-        axios.get(`http://localhost/api/excursion_detail.php?id=${excursionId}`)
-          .then(response => {
-            this.excursion = response.data;
-          })
-          .catch(error => {
-            console.error('Error fetching excursion details:', error);
-          });
-      },
-      reserveExcursion() {
-        if (!isAuthenticated()) {
-          this.$router.push('/login');
-          return;
-        }
-        this.$router.push(`/reserve/${this.$route.params.id}`);
-      },
-      nextSlide() {
-        if (this.excursion.images.length > 0) {
-          this.activeIndex = (this.activeIndex + 1) % this.excursion.images.length;
-        }
-      },
-      prevSlide() {
-        if (this.excursion.images.length > 0) {
-          this.activeIndex = (this.activeIndex - 1 + this.excursion.images.length) % this.excursion.images.length;
-        }
+    nextSlide() {
+      if (this.excursion.images.length > 0) {
+        this.activeIndex = (this.activeIndex + 1) % this.excursion.images.length;
+      }
+    },
+    prevSlide() {
+      if (this.excursion.images.length > 0) {
+        this.activeIndex = (this.activeIndex - 1 + this.excursion.images.length) % this.excursion.images.length;
       }
     }
+  }
   };
   </script>
   
