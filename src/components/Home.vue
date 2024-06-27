@@ -8,18 +8,23 @@
     <div v-for="(image, index) in images" :key="index" class="carousel-item" :class="{ active: index === activeIndex }">
       <img :src="image.src" :alt="image.alt" class="carousel-img">
     </div>
-    <button @click="prevSlide" class="prev">Prev</button>
-    <button @click="nextSlide" class="next">Next</button>
+    <button @click="prevSlide" class="prev">‹</button>
+    <button @click="nextSlide" class="next">›</button>
   </div>
 
   <div class="news-section">
-    <div v-for="newsItem in news" :key="newsItem.id" class="news-item">
-      <img :src="newsItem.img_src" :alt="newsItem.img_alt" class="news-img">
-      <div class="news-info">
-        <h2>{{ newsItem.title }}</h2>
-        <p>{{ formatDate(newsItem.published_at) }}</p>
+    <button @click="prevNews" class="prev-news">‹ </button>
+    <div class="news-carousel">
+      <div v-for="newsItem in displayedNews" :key="newsItem.id" class="news-item" @click="goToNewsDetail(newsItem.id)">
+        <img :src="newsItem.img_src" :alt="newsItem.img_alt" class="news-img">
+        <div class="news-info">
+          <h2>{{ newsItem.title }}</h2>
+          <p>{{ formatDate(newsItem.published_at) }}</p>
+          <p>{{ newsItem.content.substring(0, 100) }}...</p> <!-- Додано частину контенту -->
+        </div>
       </div>
     </div>
+    <button @click="nextNews" class="next-news"> ›</button>
   </div>
 </template>
 
@@ -31,8 +36,14 @@ export default {
     return {
       images: [],
       activeIndex: 0,
-      news: []
+      news: [],
+      newsIndex: 0
     };
+  },
+  computed: {
+    displayedNews() {
+      return this.news.slice(this.newsIndex, this.newsIndex + 4);
+    }
   },
   mounted() {
     axios.get('http://localhost/api/get_tours.php')
@@ -67,9 +78,22 @@ export default {
           console.error('Error fetching news:', error);
         });
     },
+    nextNews() {
+      if (this.newsIndex + 4 < this.news.length) {
+        this.newsIndex += 4;
+      }
+    },
+    prevNews() {
+      if (this.newsIndex - 4 >= 0) {
+        this.newsIndex -= 4;
+      }
+    },
+    goToNewsDetail(id) {
+      this.$router.push(`/news/${id}`);
+    },
     formatDate(dateString) {
-      const options = { year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric' };
-      return new Date(dateString).toLocaleDateString(undefined, options);
+      const options = { year: 'numeric', month: 'long', day: 'numeric' };
+      return new Date(dateString).toLocaleDateString('en-US', options); // Локаль 'en-US' для англійських місяців
     }
   }
 };
@@ -178,14 +202,22 @@ html {
 
 .news-section {
   display: flex;
-  flex-wrap: wrap;
-  gap: 20px;
+  align-items: center;
   justify-content: center;
   padding: 20px;
+  gap: 20px;
+}
+
+.news-carousel {
+  display: flex;
+  gap: 20px;
+  overflow: hidden;
+  max-width: calc(400px * 4 + 20px * 3); 
 }
 
 .news-item {
-  width: 300px;
+  min-width: 300px;
+  flex: 1 0 300px;
   border-radius: 10px;
   overflow: hidden;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
@@ -219,5 +251,18 @@ html {
   font-size: 1rem;
   margin: 5px 0;
   color: #555;
+}
+
+.prev-news, .next-news {
+  background-color: rgba(0, 0, 0, 0.5);
+  color: white;
+  border: none;
+  padding: 10px;
+  cursor: pointer;
+  z-index: 1000;
+}
+
+.prev-news:hover, .next-news:hover {
+  background-color: rgba(0, 0, 0, 0.7);
 }
 </style>
