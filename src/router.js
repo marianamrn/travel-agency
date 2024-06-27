@@ -15,7 +15,7 @@ import ExcursionDetail from './components/ExcursionDetail.vue';
 import ExcursionReservation from './components/ExcursionReservation.vue';
 import HotelDetail from './components/HotelDetail.vue'; 
 import HotelReservation from './components/HotelReservation.vue';
-import NewsDetail from './components/NewsDetail.vue'; // Додано новий компонент
+import NewsDetail from './components/NewsDetail.vue'; 
 
 const routes = [
   { path: '/', component: Home },
@@ -33,7 +33,7 @@ const routes = [
   { path: '/reserveExcursions/:id', component: ExcursionReservation, props: true },
   { path: '/hotel/:id', component: HotelDetail, props: true },
   { path: '/hotelReservation/:id', component: HotelReservation, props: true },
-  { path: '/news/:id', component: NewsDetail, props: true } // Додано маршрут для детальної новини
+  { path: '/news/:id', component: NewsDetail, props: true } 
 ];
 
 const router = createRouter({

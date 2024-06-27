@@ -1,5 +1,6 @@
 <template>
   <div class="about-us">
+    <img class="page-cover" src="@/assets/images/page-covers/about-us.png" alt="cover">
     <section class="who-we-are">
       <img class="who-we-are-photo" src="@/assets/images/Travel Logo.png" alt="Travel Logo">
       <div class="who-we-are-text">
@@ -20,7 +21,7 @@
       <img class="our-mission-photo" src="@/assets/images/our-mission-photo.jpg" alt="Our Mission">
     </section>
     <section class="our-values">
-      <h1>Our values</h1>
+      <h1>Our Values</h1>
       <ul>
         <li>
           <h3>Integrity</h3>
@@ -77,6 +78,13 @@ export default defineComponent({
   color: #fff; /* Updated to white for better visibility on a dark background */
   max-width: 100%;
   margin: auto;
+}
+
+.page-cover {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  opacity: 0.6;
 }
 
 h1 {
@@ -149,9 +157,10 @@ section {
 
 .our-values ul {
   display: flex;
-  justify-content: space-around;
+  justify-content: center;
   list-style: none;
   padding: 0;
+  gap: 40px;
 }
 
 .our-values li {
