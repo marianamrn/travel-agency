@@ -86,138 +86,142 @@
   
   <style scoped>
   .page-title {
-    text-align: center;
-    margin: 20px 0;
-    font-size: 2.5rem;
-    color: #333;
-  }
-  
-  .search-form {
-    background-color: #fff;
-    border-radius: 15px;
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-    padding: 15px;
-    max-width: 1300px;
-    margin: 0 auto 20px;
-    transition: box-shadow 0.3s;
-  }
-  
-  .search-form:hover {
-    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3);
-  }
-  
-  .search-inputs {
-    display: flex;
-    gap: 10px;
-    align-items: center;
-    justify-content: space-between;
-  }
-  
-  .search-form input,
-  .search-form select,
-  .price-range input {
-    padding: 10px;
-    font-size: 0.875rem;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    width: 180px;
-    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
-    transition: border-color 0.3s, box-shadow 0.3s;
-  }
-  
-  .search-form input:focus,
-  .search-form select:focus,
-  .price-range input:focus {
-    border-color: #007bff;
-    box-shadow: inset 0 3px 6px rgba(0, 0, 0, 0.15);
-    outline: none;
-  }
-  
-  .button-search {
-    padding: 10px 20px;
-    font-size: 0.875rem;
-    border: none;
-    border-radius: 8px;
-    background-color: #007bff;
-    color: white;
-    cursor: pointer;
-    transition: background-color 0.3s, transform 0.3s;
-  }
-  
-  .button-search:hover {
-    background-color: #0056b3;
-    transform: translateY(-2px);
-  }
-  
-  .rating-filter {
-    display: flex;
-    align-items: center;
-  }
-  
-  .rating-filter span {
-    cursor: pointer;
-    font-size: 2rem;
-    color: #ddd;
-  }
-  
-  .rating-filter span.selected {
-    color: gold;
-  }
-  
-  .price-range {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
-  
-  .hotels-container {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
-    justify-content: center;
-    padding: 20px;
-  }
-  
-  .hotel-card {
-    width: 300px;
-    border-radius: 10px;
-    overflow: hidden;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    transition: transform 0.3s, box-shadow 0.3s;
-  }
-  
-  .hotel-card:hover {
-    transform: translateY(-10px);
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
-  }
-  
-  .hotel-cover {
-    width: 100%;
-    height: 200px;
-    object-fit: cover;
-  }
-  
-  .hotel-info {
-    padding: 15px;
-    text-align: center;
-  }
-  
-  .hotel-name {
-    font-size: 1.5rem;
-    margin: 10px 0;
-  }
-  
-  .hotel-rating,
-  .hotel-city,
-  .hotel-price {
-    margin: 5px 0;
-    font-size: 1rem;
-  }
-  
-  .no-hotels {
-    text-align: center;
-    margin-top: 50px;
-    font-size: 1.5rem;
-    color: #666;
-  }
+  text-align: center;
+  margin: 20px 0;
+  font-size: 2.5rem;
+  color: #333;
+}
+
+.search-form {
+  background-color: #fff;
+  border-radius: 15px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  padding: 15px;
+  max-width: 1300px;
+  margin: 0 auto 20px;
+  transition: box-shadow 0.3s;
+}
+
+.search-form:hover {
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3);
+}
+
+.search-inputs {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.search-form input,
+.search-form select,
+.price-range input {
+  padding: 10px;
+  font-size: 0.875rem;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  width: 180px;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.search-form input:focus,
+.search-form select:focus,
+.price-range input:focus {
+  border-color: #007bff;
+  box-shadow: inset 0 3px 6px rgba(0, 0, 0, 0.15);
+  outline: none;
+}
+
+.button-search {
+  padding: 10px 20px;
+  font-size: 0.875rem;
+  border: none;
+  border-radius: 8px;
+  background-color: #007bff;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.3s;
+}
+
+.button-search:hover {
+  background-color: #0056b3;
+  transform: translateY(-2px);
+}
+
+.rating-filter {
+  display: flex;
+  align-items: center;
+}
+
+.rating-filter span {
+  cursor: pointer;
+  font-size: 2rem;
+  color: #ddd;
+}
+
+.rating-filter span.selected {
+  color: gold;
+}
+
+.price-range {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.hotels-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+  padding: 20px;
+}
+
+.hotel-card {
+  width: 300px;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s, box-shadow 0.3s;
+  cursor: pointer;
+}
+
+.hotel-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+}
+
+.hotel-cover {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+}
+
+.hotel-info {
+  padding: 15px;
+}
+
+.hotel-name {
+  font-size: 1.5rem;
+  margin: 0 0 10px;
+  color: #044c98;
+}
+
+.hotel-rating,
+.hotel-city,
+.hotel-price {
+  font-size: 1rem;
+  margin: 5px 0;
+  color: #555;
+}
+
+.no-hotels {
+  text-align: center;
+  margin-top: 50px;
+  font-size: 1.5rem;
+  color: #666;
+}
+
   </style>

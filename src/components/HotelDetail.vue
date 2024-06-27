@@ -26,12 +26,14 @@
       <p><strong>Suite Price:</strong> ${{ hotel.suite_price }}</p>
       <p><strong>Luxe Price:</strong> ${{ hotel.luxe_price }}</p>
       <p><strong>President Price:</strong> ${{ hotel.president_price }}</p>
+      <button class="reserve-button" @click="reserveHotel">Reserve</button>
     </div>
   </div>
 </template>
 
 <script>
 import axios from 'axios';
+import { isAuthenticated } from '@/auth';
 
 export default {
   data() {
@@ -65,7 +67,14 @@ export default {
       if (this.images.length > 0) {
         this.activeIndex = (this.activeIndex - 1 + this.images.length) % this.images.length;
       }
-    }
+    },
+    reserveHotel() {
+  if (!isAuthenticated()) {
+    this.$router.push('/login');
+    return;
+  }
+  this.$router.push(`/hotelReservation/${this.$route.params.id}`);
+}
   }
 };
 </script>
@@ -166,5 +175,26 @@ export default {
 
 .hotel-info p strong {
   color: #333;
+}
+
+.reserve-button {
+  background-color: #28a745; 
+  color: white; 
+  border: none; 
+  padding: 10px 20px; 
+  border-radius: 5px; 
+  cursor: pointer; 
+  margin-top: 20px; 
+  font-size: 1.2rem; 
+  transition: background-color 0.3s; 
+}
+
+.reserve-button:hover {
+  background-color: #218838; 
+}
+
+.reserve-button:focus {
+  outline: none; 
+  box-shadow: 0 0 0 4px rgba(40, 167, 69, 0.5); 
 }
 </style>
