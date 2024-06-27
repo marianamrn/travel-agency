@@ -13,6 +13,7 @@ import TourDetail from './components/TourDetail.vue';
 import TourReservation from './components/TourReservation.vue';
 import ExcursionDetail from './components/ExcursionDetail.vue'; 
 import ExcursionReservation from './components/ExcursionReservation.vue';
+import HotelDetail from './components/HotelDetail.vue'; // Import the new component
 
 const routes = [
   { path: '/', component: Home },
@@ -28,7 +29,8 @@ const routes = [
   { path: '/tour/:id', component: TourDetail, props: true },
   { path: '/reserveTours/:id', component: TourReservation, props: true },
   { path: '/excursion/:id', component: ExcursionDetail, props: true },
-  { path: '/reserveExcursions/:id', component: ExcursionReservation, props: true }
+  { path: '/reserveExcursions/:id', component: ExcursionReservation, props: true },
+  { path: '/hotel/:id', component: HotelDetail, props: true } // Add new route for hotel detail
 ];
 
 const router = createRouter({
