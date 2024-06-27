@@ -8,9 +8,19 @@
     <div v-for="(image, index) in images" :key="index" class="carousel-item" :class="{ active: index === activeIndex }">
       <img :src="image.src" :alt="image.alt" class="carousel-img">
     </div>
+    <button @click="prevSlide" class="prev">Prev</button>
+    <button @click="nextSlide" class="next">Next</button>
   </div>
-  <button @click="prevSlide" class="prev">Prev</button>
-  <button @click="nextSlide" class="next">Next</button>
+
+  <div class="news-section">
+    <div v-for="newsItem in news" :key="newsItem.id" class="news-item">
+      <img :src="newsItem.img_src" :alt="newsItem.img_alt" class="news-img">
+      <div class="news-info">
+        <h2>{{ newsItem.title }}</h2>
+        <p>{{ formatDate(newsItem.published_at) }}</p>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -20,7 +30,8 @@ export default {
   data() {
     return {
       images: [],
-      activeIndex: 0
+      activeIndex: 0,
+      news: []
     };
   },
   mounted() {
@@ -32,18 +43,33 @@ export default {
       .catch(error => {
         console.error('Error fetching images:', error);
       });
+
+    this.fetchNews();
   },
   methods: {
     startCarousel() {
       setInterval(() => {
         this.nextSlide();
-      }, 3000); // Змінюйте слайд кожні 3 секунди
+      }, 3000);
     },
     nextSlide() {
       this.activeIndex = (this.activeIndex + 1) % this.images.length;
     },
     prevSlide() {
       this.activeIndex = (this.activeIndex - 1 + this.images.length) % this.images.length;
+    },
+    fetchNews() {
+      axios.get('http://localhost/api/news.php')
+        .then(response => {
+          this.news = response.data;
+        })
+        .catch(error => {
+          console.error('Error fetching news:', error);
+        });
+    },
+    formatDate(dateString) {
+      const options = { year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric' };
+      return new Date(dateString).toLocaleDateString(undefined, options);
     }
   }
 };
@@ -80,11 +106,11 @@ body, html {
 
 .home-cover h1 {
   position: absolute;
-  top: 210px; /* Позиціонуємо текст на перетині */
-  left: 15%; /* Розміщуємо текст зліва */
+  top: 210px; 
+  left: 15%; 
   color: rgb(255, 255, 255);
   font-size: 3rem;
-  text-align: center; /* Вирівнюємо текст по центру всередині блоку */
+  text-align: center; 
   z-index: 1;
   margin: 0; 
   padding: 0;
@@ -92,8 +118,8 @@ body, html {
 
 .travel24-img {
   position: absolute;
-  top: 90px; /* Вирівнюємо з h1 */
-  left: 60%; /* Розміщуємо зображення біля тексту */
+  top: 90px; 
+  left: 60%; 
   height: 50%;
   width: 25%;
   z-index: 1;
@@ -103,36 +129,30 @@ html {
   scroll-behavior: smooth;
 }
 
-/* Стилі для каруселі */
 .carousel {
-  display: flex;
-  overflow: hidden;
-  width: 100%;
-  height: 50vh; /* Задайте потрібну висоту */
   position: relative;
+  width: 100%;
+  margin: 0 auto;
+  overflow: hidden;
 }
 
 .carousel-item {
-  flex: 0 0 100%;
-  transition: transform 0.5s ease-in-out, opacity 1s ease-in-out;
-  opacity: 0;
-  position: absolute;
-  top: 0;
-  left: 0;
+  display: none;
+  transition: opacity 1s ease-in-out;
 }
 
 .carousel-item.active {
+  display: block;
   opacity: 1;
 }
 
 .carousel-img {
   width: 100%;
-  height: 100%;
-  object-fit: cover;
+  height: 100vh; 
+  object-fit: cover; 
 }
 
-.prev, 
-.next {
+.prev, .next {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
@@ -141,22 +161,63 @@ html {
   border: none;
   padding: 10px;
   cursor: pointer;
-  z-index: 1;
+  z-index: 1000;
 }
 
-button:hover {
-  background-color: rgba(0, 0, 0, 0.7);
-}
-
-button:focus {
-  outline: none;
-}
-
-.prev:first-of-type {
+.prev {
   left: 10px;
 }
 
-.next:last-of-type {
+.next {
   right: 10px;
+}
+
+.prev:hover, .next:hover {
+  background-color: rgba(0, 0, 0, 0.7);
+}
+
+.news-section {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+  padding: 20px;
+}
+
+.news-item {
+  width: 300px;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s, box-shadow 0.3s;
+  cursor: pointer;
+  background-color: white;
+}
+
+.news-item:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+}
+
+.news-img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+}
+
+.news-info {
+  padding: 15px;
+}
+
+.news-info h2 {
+  font-size: 1.5rem;
+  margin: 0 0 10px;
+  color: #333;
+}
+
+.news-info p {
+  font-size: 1rem;
+  margin: 5px 0;
+  color: #555;
 }
 </style>
