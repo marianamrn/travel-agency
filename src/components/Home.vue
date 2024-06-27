@@ -4,28 +4,59 @@
     <h1>DISCOVER THIS WORLD<br>WITH YOUR TRAVEL</h1>
     <img class="travel24-img" src="@/assets/images/247.png" alt="247">
   </div>
-  <div v-if="images.length" class="carousel">
-    <div v-for="(image, index) in images" :key="index" class="carousel-item" :class="{ active: index === activeIndex }">
-      <img :src="image.src" :alt="image.alt" class="carousel-img">
+  <section class="tours">
+    <img class="our-tours-photo" src="@/assets/images/page-covers/tours.png" alt="our-tours" @click="goToTours">
+    <div v-if="images.length" class="carousel">
+      <div v-for="(image, index) in images" :key="index" class="carousel-item" :class="{ active: index === activeIndex }">
+        <img :src="image.src" :alt="image.alt" class="carousel-img">
+      </div>
+      <button @click="prevSlide" class="prev">‹</button>
+      <button @click="nextSlide" class="next">›</button>
     </div>
-    <button @click="prevSlide" class="prev">‹</button>
-    <button @click="nextSlide" class="next">›</button>
-  </div>
-
-  <div class="news-section">
-    <button @click="prevNews" class="prev-news">‹ </button>
-    <div class="news-carousel">
-      <div v-for="newsItem in displayedNews" :key="newsItem.id" class="news-item" @click="goToNewsDetail(newsItem.id)">
-        <img :src="newsItem.img_src" :alt="newsItem.img_alt" class="news-img">
-        <div class="news-info">
-          <h2>{{ newsItem.title }}</h2>
-          <p>{{ formatDate(newsItem.published_at) }}</p>
-          <p>{{ newsItem.content.substring(0, 100) }}...</p>
+  </section>
+  <section class="news">
+    <img class="news-cover" src="@/assets/images/page-covers/news.png" alt="news-cover">
+    <div class="news-section">
+      <button @click="prevNews" class="prev-news">‹</button>
+      <div class="news-carousel">
+        <div v-for="newsItem in displayedNews" :key="newsItem.id" class="news-item" @click="goToNewsDetail(newsItem.id)">
+          <img :src="newsItem.img_src" :alt="newsItem.img_alt" class="news-img">
+          <div class="news-info">
+            <h2>{{ newsItem.title }}</h2>
+            <p>{{ formatDate(newsItem.published_at) }}</p>
+            <p>{{ newsItem.content.substring(0, 100) }}...</p>
+          </div>
         </div>
       </div>
+      <button @click="nextNews" class="next-news">›</button>
     </div>
-    <button @click="nextNews" class="next-news"> ›</button>
-  </div>
+  </section>
+
+  <section class="consultation">
+    <h2>Consultation</h2>
+    <button @click="showForm = !showForm">Ask a question</button>
+    <div v-if="showForm" class="form-container">
+      <form @submit.prevent="submitForm">
+        <div>
+          <label for="name">Name:</label>
+          <input type="text" v-model="form.name" required>
+        </div>
+        <div>
+          <label for="email">Email:</label>
+          <input type="email" v-model="form.email" required>
+        </div>
+        <div>
+          <label for="phone">Phone:</label>
+          <input type="text" v-model="form.phone" required>
+        </div>
+        <div>
+          <label for="message">Message:</label>
+          <textarea v-model="form.message" required></textarea>
+        </div>
+        <button type="submit">Submit</button>
+      </form>
+    </div>
+  </section>
 </template>
 
 <script>
@@ -37,7 +68,14 @@ export default {
       images: [],
       activeIndex: 0,
       news: [],
-      newsIndex: 0
+      newsIndex: 0,
+      showForm: false,
+      form: {
+        name: '',
+        email: '',
+        phone: '',
+        message: ''
+      }
     };
   },
   computed: {
@@ -91,9 +129,28 @@ export default {
     goToNewsDetail(id) {
       this.$router.push(`/news/${id}`);
     },
+    goToTours() {
+      this.$router.push('/tours');
+    },
     formatDate(dateString) {
       const options = { year: 'numeric', month: 'long', day: 'numeric' };
       return new Date(dateString).toLocaleDateString('en-US', options);
+    },
+    submitForm() {
+      axios.post('http://localhost/api/save_message.php', this.form)
+        .then(response => {
+          alert('Your message has been sent!');
+          this.showForm = false;
+          this.form = {
+            name: '',
+            email: '',
+            phone: '',
+            message: ''
+          };
+        })
+        .catch(error => {
+          console.error('Error submitting form:', error);
+        });
     }
   }
 };
@@ -149,14 +206,17 @@ body, html {
   z-index: 1;
 }
 
-html {
-  scroll-behavior: smooth;
+.our-tours-photo {
+  width: 100%;
+  height: 100px;
+  object-fit: cover;
+  opacity: 0.9;
+  margin-top: -500px;
 }
 
 .carousel {
   position: relative;
   width: 100%;
-  margin: 0 auto;
   overflow: hidden;
 }
 
@@ -208,6 +268,14 @@ html {
   gap: 20px;
 }
 
+.news-cover {
+  width: 100%;
+  height: 100px;
+  object-fit: cover;
+  opacity: 0.9;
+  margin-top: 50px;
+}
+
 .news-carousel {
   display: flex;
   gap: 20px;
@@ -244,13 +312,12 @@ html {
 .news-info h2 {
   font-size: 1.5rem;
   margin: 0 0 10px;
-  color: #333;
+  color: hsl(220, 15%, 15%);
 }
 
 .news-info p {
-  font-size: 1rem;
-  margin: 5px 0;
-  color: #555;
+  margin: 0;
+  color: hsl(220, 10%, 40%);
 }
 
 .prev-news, .next-news {
@@ -260,10 +327,99 @@ html {
   padding: 10px;
   cursor: pointer;
   z-index: 1000;
-  border-radius: 50%;
 }
 
 .prev-news:hover, .next-news:hover {
   background-color: rgba(0, 0, 0, 0.7);
+}
+
+.consultation {
+  padding: 40px 20px;
+  background-image: url('@/assets/images/consultation-background.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-color: #f1f1f1;
+  margin: 40px 0;
+  text-align: center;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.consultation h2 {
+  font-size: 2rem;
+  color: hsl(220, 15%, 15%);
+  margin-bottom: 20px;
+}
+
+.consultation button {
+  padding: 10px 20px;
+  background-color: #007BFF;
+  color: white;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+  font-size: 1rem;
+  transition: background-color 0.3s;
+}
+
+.consultation button:hover {
+  background-color: #0056b3;
+}
+
+.form-container {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+}
+
+form {
+  width: 100%;
+  max-width: 600px;
+  background-color: white;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+form div {
+  margin-bottom: 15px;
+  text-align: left;
+}
+
+form label {
+  display: block;
+  margin-bottom: 5px;
+  font-size: 1rem;
+  color: hsl(220, 15%, 15%);
+}
+
+form input, form textarea {
+  width: 100%;
+  padding: 10px;
+  box-sizing: border-box;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+}
+
+form input:focus, form textarea:focus {
+  border-color: #007BFF;
+  outline: none;
+}
+
+form button {
+  padding: 10px 20px;
+  background-color: #007BFF;
+  color: white;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+  font-size: 1rem;
+  transition: background-color 0.3s;
+}
+
+form button:hover {
+  background-color: #0056b3;
 }
 </style>
