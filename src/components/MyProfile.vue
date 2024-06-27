@@ -2,7 +2,7 @@
   <div v-if="isAuthenticated">
     <div class="myprofile">
       <h1>Account</h1>
-      <p class="start">Welcome, {{ user.name }}! Welcome to your personal account!</p>
+      <p class="start">Welcome to your personal account, {{ user.name }}!</p>
       <div class="user_info">
         <p class="name_table">Basic Information</p>
         <table class="user_info_table">
@@ -27,10 +27,10 @@
       <button class="logout-btn" @click="logout">Log Out</button>
     </div>
   </div>
-  <div v-else>
+  <div v-else class="unauthorized">
     <h1>Account</h1>
     <p class="start">You are not authorized. Please log in to your account.</p>
-    <router-link to="/login" class="login">Login</router-link>
+    <router-link to="/login" class="login-btn">Log in</router-link>
   </div>
 </template>
 
@@ -48,22 +48,26 @@ export default {
   },
   methods: {
     logout() {
-      logout(); // Видаляємо дані з localStorage
-      this.$router.push('/login'); // Перенаправляємо на сторінку логіну після виходу
+      logout(); 
+      this.$router.push('/login'); 
     }
   }
 };
 </script>
 
 <style scoped>
-/* Global styles */
-.myprofile {
+.myprofile,
+.unauthorized {
   max-width: 800px;
   margin: 0 auto;
   padding: 20px;
   background-color: #fff;
   box-shadow: 0 0 10px rgba(0,0,0,0.1);
   border-radius: 8px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
 h1 {
@@ -125,8 +129,41 @@ h1 {
   background-color: #c82333;
 }
 
+.unauthorized h1 {
+  font-size: 2.5rem;
+  color: #333;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.unauthorized .start {
+  font-size: 1.2rem;
+  color: #666;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.unauthorized .login-btn {
+  display: block;
+  text-align: center;
+  width: 120px;
+  font-size: 1rem;
+  color: #fff;
+  background-color: #007bff;
+  text-decoration: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  margin: 20px auto 0 auto; /* Center the button horizontally */
+  transition: background-color 0.3s;
+}
+
+.unauthorized .login-btn:hover {
+  background-color: #0056b3;
+}
+
 @media (max-width: 600px) {
-  .myprofile {
+  .myprofile,
+  .unauthorized {
     padding: 10px;
   }
   .start {
@@ -135,6 +172,9 @@ h1 {
   .user_info_table th,
   .user_info_table td {
     padding: 8px;
+  }
+  .unauthorized .start {
+    font-size: 1rem;
   }
 }
 </style>
