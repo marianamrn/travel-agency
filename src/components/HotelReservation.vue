@@ -123,27 +123,5 @@
   .success {
     color: #00cc00;
   }
-
-  .reserve-button {
-  background-color: #28a745; /* Зелений колір */
-  color: white; /* Білий текст */
-  border: none; /* Без обведення */
-  padding: 10px 20px; /* Відступи */
-  border-radius: 5px; /* Закруглені кути */
-  cursor: pointer; /* Курсор-палець */
-  margin-top: 20px; /* Відступ зверху */
-  font-size: 1.2rem; /* Розмір тексту */
-  transition: background-color 0.3s; /* Анімація зміни фону */
-}
-
-.reserve-button:hover {
-  background-color: #218838; /* Трохи темніший зелений при наведенні */
-}
-
-.reserve-button:focus {
-  outline: none; /* Без обведення при фокусі */
-  box-shadow: 0 0 0 4px rgba(40, 167, 69, 0.5); /* Тінь при фокусі */
-}
-
   </style>
   
