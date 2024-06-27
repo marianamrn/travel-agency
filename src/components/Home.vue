@@ -20,7 +20,7 @@
         <div class="news-info">
           <h2>{{ newsItem.title }}</h2>
           <p>{{ formatDate(newsItem.published_at) }}</p>
-          <p>{{ newsItem.content.substring(0, 100) }}...</p> <!-- Додано частину контенту -->
+          <p>{{ newsItem.content.substring(0, 100) }}...</p>
         </div>
       </div>
     </div>
@@ -93,7 +93,7 @@ export default {
     },
     formatDate(dateString) {
       const options = { year: 'numeric', month: 'long', day: 'numeric' };
-      return new Date(dateString).toLocaleDateString('en-US', options); // Локаль 'en-US' для англійських місяців
+      return new Date(dateString).toLocaleDateString('en-US', options);
     }
   }
 };
@@ -260,6 +260,7 @@ html {
   padding: 10px;
   cursor: pointer;
   z-index: 1000;
+  border-radius: 50%;
 }
 
 .prev-news:hover, .next-news:hover {
